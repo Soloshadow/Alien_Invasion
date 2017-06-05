@@ -1,0 +1,11 @@
+container{
+    width: 800px;
+    height: 600px;
+}
+
+bg {
+    background-color: black;
+    background-image: url(../images/bg1.png);
+    width:800px;
+    height: 600px;
+}
