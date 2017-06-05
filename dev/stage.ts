@@ -1,18 +1,10 @@
 
-class Stage{
+class Stage extends GameObject{
   div:HTMLElement;
-  x:number;
-  y:number;
+ 
 
     constructor(x:number, y:number){
-      this.x = x;
-      this.y = y;
-
-      let container: HTMLElement = document.getElementById("container");
-      this.div = document.createElement("bg");
-      container.appendChild(this.div);
-    
-      this.div.style.transform = "translate("+this.x+"px,"+this.y+"px)"; 
+      super("bg",document.getElementById("container"), x, y, 800, 600);   
     }
 
     update(){
@@ -24,8 +16,5 @@ class Stage{
       }
     }
 
-    draw(){
-        this.div.style.transform = "translate("+this.x+"px,"+this.y+"px)";
-    }
    
 }

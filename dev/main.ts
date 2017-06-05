@@ -8,7 +8,7 @@ bg2:Stage;
 
     constructor(){
         this.bg1 = new Stage(0,0);
-        this.bg2 = new Stage(0,-800);
+        //this.bg2 = new Stage(0,-800);
 
          requestAnimationFrame(()=>this.gameLoop());
     }

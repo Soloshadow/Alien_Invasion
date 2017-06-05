@@ -9,6 +9,15 @@ abstract class GameObject {
    constructor(tag:string, elm:HTMLElement, x:number, y:number, width:number, height:number){
         this.div = document.createElement(tag);
         elm.appendChild(this.div);
+        this.div.style.width = width+"px";
+        this.div.style.height = height+"px";
+
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        this.draw();
    }
 
     draw():void{
