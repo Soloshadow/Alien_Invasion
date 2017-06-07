@@ -1,12 +1,38 @@
+body {
+    background-color: #666;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow:hidden;
+    margin:0px; padding:0px;
+}
+
+body * {
+    position: absolute;
+    display: block;
+    margin:0px; padding:0px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+}
 
 container{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
     width: 800px;
     height: 600px;
     
 }
 
-bg {
+background {
     background-image: url(../images/bg1.png);
     width:800px;
     height: 600px;
+}
+
+player {
+    background-image: url("../images/spaceship.png");
+}
+
+enemies{
+    background-image: url("../images/alien2.png");
 }
