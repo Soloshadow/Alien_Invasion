@@ -1,10 +1,11 @@
-abstract class GameObject {
+class GameObject {
 
     public div:HTMLElement;
     public x:number;
     public y:number;
     public width:number;
     public height:number;
+    public speed:number;
 
    constructor(tag:string, elm:HTMLElement, x:number, y:number, width:number, height:number){
         this.div = document.createElement(tag);

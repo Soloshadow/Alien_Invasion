@@ -5,8 +5,7 @@ class Enemies extends GameObject implements ShipsInterface{
     height:number;
     hp:number;
     x:number;
-    y:number
-    dir:number;
+    y:number;
    
 
     constructor(x:number, y:number){
@@ -19,17 +18,13 @@ class Enemies extends GameObject implements ShipsInterface{
         this.height = 50;
         this.hp = 1;
 
-        //dir is the direction the alien ship will move. Positive = move to right. Negative = move to left
-        this.dir = 1;
+        //speed is the direction the alien ship will move. Positive = move to right. Negative = move to left
+        this.speed = 1;
         
     }
 
     move(){
-        this.x += this.dir;
-        // if(this.check_edge()){
-        //     this.y += 50;
-        //     this.dir *= -1;
-        // }
+        this.x += this.speed;     
     }
 
 
@@ -37,17 +32,10 @@ class Enemies extends GameObject implements ShipsInterface{
 
     }
 
+    //shift the alien down verically and move it to the opposie direction
     shift_down(){
         this.y += 25;
-        this.dir *= -1;
+        this.speed *= -1;
         
     }
-
-//    check_edge(){
-//        if(this.x + 50 >= 800){
-//            return true;
-//        }else if(this.x <= 0){
-//            return true;
-//        }
-//    }
 }

@@ -25,6 +25,20 @@ var GameObject = (function () {
     };
     return GameObject;
 }());
+var Bullets = (function (_super) {
+    __extends(Bullets, _super);
+    function Bullets(x, y) {
+        var _this = _super.call(this, "bullets", document.getElementById("container"), x, y, 5, 10) || this;
+        _this.x = x;
+        _this.y = y;
+        _this.bulletSpeed = 5;
+        return _this;
+    }
+    Bullets.prototype.update = function () {
+        this.y += this.bulletSpeed;
+    };
+    return Bullets;
+}(GameObject));
 var Enemies = (function (_super) {
     __extends(Enemies, _super);
     function Enemies(x, y) {
@@ -34,17 +48,17 @@ var Enemies = (function (_super) {
         _this.width = 50;
         _this.height = 50;
         _this.hp = 1;
-        _this.dir = 1;
+        _this.speed = 1;
         return _this;
     }
     Enemies.prototype.move = function () {
-        this.x += this.dir;
+        this.x += this.speed;
     };
     Enemies.prototype.shoot = function () {
     };
     Enemies.prototype.shift_down = function () {
         this.y += 25;
-        this.dir *= -1;
+        this.speed *= -1;
     };
     return Enemies;
 }(GameObject));
@@ -95,10 +109,12 @@ var Fleets = (function () {
 var Stage = (function (_super) {
     __extends(Stage, _super);
     function Stage(x, y) {
-        return _super.call(this, "background", document.getElementById("container"), x, y, 800, 600) || this;
+        var _this = _super.call(this, "background", document.getElementById("container"), x, y, 800, 600) || this;
+        _this.speed = 0.5;
+        return _this;
     }
     Stage.prototype.update = function () {
-        this.y += 0.5;
+        this.y += this.speed;
         if (this.y > 600) {
             this.y = -599;
         }
@@ -137,6 +153,11 @@ var Player = (function (_super) {
     function Player() {
         var _this = _super.call(this, "player", document.getElementById("container"), 400, 540, 50, 50) || this;
         _this.hp = 3;
+        _this.player_width = 50;
+        _this.player_height = 50;
+        _this.player_x = 400;
+        _this.player_y = 540;
+        _this.speed = 5;
         return _this;
     }
     Player.prototype.move = function () {
@@ -145,4 +166,21 @@ var Player = (function (_super) {
     };
     return Player;
 }(GameObject));
+var PlayerAction = (function () {
+    function PlayerAction(p) {
+        this.player = p;
+    }
+    return PlayerAction;
+}());
+var Util = (function () {
+    function Util() {
+    }
+    Util.checkCollision = function (obj1, obj2) {
+        return (obj1.x < obj2.x + obj2.width &&
+            obj1.x + obj1.width > obj2.x &&
+            obj1.y < obj2.y + obj2.height &&
+            obj1.height + obj1.y > obj2.y);
+    };
+    return Util;
+}());
 //# sourceMappingURL=main.js.map

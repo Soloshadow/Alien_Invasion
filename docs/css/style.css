@@ -36,3 +36,9 @@ player {
 enemies{
     background-image: url("../images/alien2.png");
 }
+
+bullets{
+    width: 5px;
+    height: 5px;
+    background-color: white;
+}
