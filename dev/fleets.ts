@@ -2,14 +2,15 @@
 
 class Fleets{
 
-    private aliens: Array<Enemies> = new Array;
+    public aliens: Array<Enemies> = new Array;
+
     private aliensx: number;
     private aliensy: number;
     
 
-    constructor(){
-        this.add_aliens();
-        
+    constructor(s:number){
+        this.add_aliens(s);
+        console.log(s);
     }
 
     // check how many number of aliens can fit in a row
@@ -27,13 +28,13 @@ class Fleets{
     }
 
     // add the aliens to the aliens array to create a feet of aliens
-    add_aliens(){
+    add_aliens(s:number){
         this.aliensx = this.aliens_number();
         this.aliensy = this.aliens_row();
 
         for (let i = 0; i < this.aliensy; i++){
-            for (let n = 0; n < this.aliensx; n++){
-                this.aliens.push(new Enemies(n * 80, i * 60));
+            for (let n = 0; n < this.aliensx; n++){               
+                this.aliens.push(new Enemies(n * 80, 50 +(i * 60), s)); 
             }
         }
     }
@@ -58,17 +59,7 @@ class Fleets{
             if(edge){
                  for(let j = 0; j < this.aliens.length; j++){
                  this.aliens[j].shift_down();
-                 }
-        
-        }
-   
- 
+                 }     
+        }  
     }
-
-   
-
-
-
-   
-
 }

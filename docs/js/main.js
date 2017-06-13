@@ -8,6 +8,52 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var Action;
+(function (Action) {
+    var MoveLeft = (function () {
+        function MoveLeft(p) {
+            this.player = p;
+        }
+        MoveLeft.prototype.action = function () {
+            if (this.player.x >= 0) {
+                this.player.x -= this.player.speed;
+            }
+        };
+        return MoveLeft;
+    }());
+    Action.MoveLeft = MoveLeft;
+    var MoveRight = (function () {
+        function MoveRight(p) {
+            this.player = p;
+        }
+        MoveRight.prototype.action = function () {
+            if (this.player.x + this.player.width <= 800) {
+                this.player.x += this.player.speed;
+            }
+        };
+        return MoveRight;
+    }());
+    Action.MoveRight = MoveRight;
+    var Idle = (function () {
+        function Idle(p) {
+            this.player = p;
+        }
+        Idle.prototype.action = function () {
+        };
+        return Idle;
+    }());
+    Action.Idle = Idle;
+    var Attack = (function () {
+        function Attack(c) {
+            this.player = c;
+        }
+        Attack.prototype.action = function () {
+            this.player.bullets.push(new Bullets(this.player.x + this.player.width / 2, this.player.y, this.player.bulletSpeed));
+        };
+        return Attack;
+    }());
+    Action.Attack = Attack;
+})(Action || (Action = {}));
 var GameObject = (function () {
     function GameObject(tag, elm, x, y, width, height) {
         this.div = document.createElement(tag);
@@ -23,38 +69,41 @@ var GameObject = (function () {
     GameObject.prototype.draw = function () {
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
     };
+    GameObject.prototype.update = function () {
+    };
     return GameObject;
 }());
 var Bullets = (function (_super) {
     __extends(Bullets, _super);
-    function Bullets(x, y) {
+    function Bullets(x, y, s) {
         var _this = _super.call(this, "bullets", document.getElementById("container"), x, y, 5, 10) || this;
         _this.x = x;
         _this.y = y;
-        _this.bulletSpeed = 5;
+        _this.width = 5;
+        _this.height = 10;
+        _this.bulletSpeed = s;
         return _this;
     }
     Bullets.prototype.update = function () {
-        this.y += this.bulletSpeed;
+        this.y += 1 * this.bulletSpeed;
     };
     return Bullets;
 }(GameObject));
 var Enemies = (function (_super) {
     __extends(Enemies, _super);
-    function Enemies(x, y) {
+    function Enemies(x, y, s) {
         var _this = _super.call(this, "enemies", document.getElementById("container"), x, y, 50, 50) || this;
         _this.x = x;
         _this.y = y;
         _this.width = 50;
         _this.height = 50;
         _this.hp = 1;
-        _this.speed = 1;
+        _this.points = 1;
+        _this.speed = s;
         return _this;
     }
     Enemies.prototype.move = function () {
         this.x += this.speed;
-    };
-    Enemies.prototype.shoot = function () {
     };
     Enemies.prototype.shift_down = function () {
         this.y += 25;
@@ -63,9 +112,10 @@ var Enemies = (function (_super) {
     return Enemies;
 }(GameObject));
 var Fleets = (function () {
-    function Fleets() {
+    function Fleets(s) {
         this.aliens = new Array;
-        this.add_aliens();
+        this.add_aliens(s);
+        console.log(s);
     }
     Fleets.prototype.aliens_number = function () {
         var available_space = 800 / 50;
@@ -77,12 +127,12 @@ var Fleets = (function () {
         var rows = available_height / 2;
         return rows;
     };
-    Fleets.prototype.add_aliens = function () {
+    Fleets.prototype.add_aliens = function (s) {
         this.aliensx = this.aliens_number();
         this.aliensy = this.aliens_row();
         for (var i = 0; i < this.aliensy; i++) {
             for (var n = 0; n < this.aliensx; n++) {
-                this.aliens.push(new Enemies(n * 80, i * 60));
+                this.aliens.push(new Enemies(n * 80, 50 + (i * 60), s));
             }
         }
     };
@@ -106,6 +156,12 @@ var Fleets = (function () {
     };
     return Fleets;
 }());
+var Keys;
+(function (Keys) {
+    Keys[Keys["LEFT"] = 37] = "LEFT";
+    Keys[Keys["RIGHT"] = 39] = "RIGHT";
+    Keys[Keys["SPACE"] = 32] = "SPACE";
+})(Keys || (Keys = {}));
 var Stage = (function (_super) {
     __extends(Stage, _super);
     function Stage(x, y) {
@@ -124,10 +180,15 @@ var Stage = (function (_super) {
 var Game = (function () {
     function Game() {
         var _this = this;
+        this.gameobject = new Array();
+        this.gamespeed = 1;
+        this.score = 0;
+        this.mulitplier = 1;
         this.bg1 = new Stage(0, 0);
         this.bg2 = new Stage(0, -599);
         this.player = new Player();
-        this.fleet = new Fleets();
+        this.fleet = new Fleets(this.gamespeed);
+        this.gameobject.push(this.bg1, this.bg2, this.player);
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.getInstance = function () {
@@ -138,40 +199,120 @@ var Game = (function () {
     };
     Game.prototype.gameLoop = function () {
         var _this = this;
-        this.bg1.update();
-        this.bg2.update();
+        var dead = false;
+        for (var _i = 0, _a = this.gameobject; _i < _a.length; _i++) {
+            var g = _a[_i];
+            g.update();
+            g.draw();
+        }
         this.fleet.update();
-        requestAnimationFrame(function () { return _this.gameLoop(); });
+        for (var i = 0; i < this.player.bullets.length; i++) {
+            this.player.bullets[i].update();
+            this.player.bullets[i].draw();
+            if (this.player.bullets[i].y < -10) {
+                this.player.bullets[i].div.remove();
+                var s = this.player.bullets.indexOf(this.player.bullets[i]);
+                if (i != -1) {
+                    this.player.bullets.splice(s, 1);
+                }
+            }
+            for (var n = 0; n < this.fleet.aliens.length; n++) {
+                var obj1 = this.player.bullets[i];
+                var obj2 = this.fleet.aliens[n];
+                if (obj1 != null && obj2 != null) {
+                    if (Util.checkCollision(obj1, obj2)) {
+                        this.fleet.aliens[n].hp -= 1;
+                        if (this.fleet.aliens[n].hp < 1) {
+                            this.score += (this.fleet.aliens[n].points * this.mulitplier);
+                            var scoreDiv = document.getElementById("score");
+                            scoreDiv.innerHTML = "Score: " + Math.round(this.score);
+                            this.mulitplier *= 1.1;
+                            this.fleet.aliens[n].div.remove();
+                            var e = this.fleet.aliens.indexOf(this.fleet.aliens[n]);
+                            if (i != -1) {
+                                this.fleet.aliens.splice(e, 1);
+                            }
+                        }
+                        this.player.bullets[i].div.remove();
+                        var s = this.player.bullets.indexOf(this.player.bullets[i]);
+                        if (i != -1) {
+                            this.player.bullets.splice(s, 1);
+                        }
+                    }
+                }
+            }
+        }
+        for (var i = 0; i < this.fleet.aliens.length; i++) {
+            var obj1 = this.player;
+            var obj2 = this.fleet.aliens[i];
+            if (Util.checkCollision(obj1, obj2)) {
+                dead = true;
+                var endDiv = document.getElementById("gameover");
+                endDiv.innerHTML = "Game Over<br>Score: " + Math.round(this.score) + "<br>Refresh page to restart ";
+                TweenLite.to(endDiv, 3, { x: 0, y: 100, ease: Bounce.easeOut });
+            }
+        }
+        if (this.fleet.aliens.length == 0) {
+            this.gamespeed *= 1.1;
+            this.fleet = new Fleets(this.gamespeed);
+        }
+        if (!dead) {
+            requestAnimationFrame(function () { return _this.gameLoop(); });
+        }
     };
     return Game;
 }());
 window.addEventListener("load", function () {
-    new Game();
+    var btn = document.getElementById("start");
+    TweenLite.to(btn, 3, { x: 0, y: 300, ease: Bounce.easeOut });
+    btn.addEventListener("click", function () {
+        Game.getInstance();
+        btn.remove();
+    });
 });
 var Player = (function (_super) {
     __extends(Player, _super);
     function Player() {
         var _this = _super.call(this, "player", document.getElementById("container"), 400, 540, 50, 50) || this;
-        _this.hp = 3;
-        _this.player_width = 50;
-        _this.player_height = 50;
-        _this.player_x = 400;
-        _this.player_y = 540;
+        _this.bullets = new Array();
         _this.speed = 5;
+        _this.bulletSpeed = -5;
+        _this.ammo = 3;
+        _this.callback = function (e) { return _this.onKeyDown(e); };
+        window.addEventListener("keydown", _this.callback);
+        window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
+        _this.state = new Action.Idle(_this);
         return _this;
     }
-    Player.prototype.move = function () {
+    Player.prototype.onKeyDown = function (e) {
+        if (e.keyCode === Keys.LEFT) {
+            this.state = new Action.MoveLeft(this);
+        }
+        if (e.keyCode === Keys.RIGHT) {
+            this.state = new Action.MoveRight(this);
+        }
+        if (e.keyCode === Keys.SPACE) {
+            this.state = new Action.Attack(this);
+        }
     };
-    Player.prototype.shoot = function () {
+    Player.prototype.onKeyUp = function (e) {
+        this.state = new Action.Idle(this);
+    };
+    Player.prototype.update = function () {
+        this.state.action();
     };
     return Player;
 }(GameObject));
-var PlayerAction = (function () {
-    function PlayerAction(p) {
-        this.player = p;
+var ScoreBoard = (function (_super) {
+    __extends(ScoreBoard, _super);
+    function ScoreBoard() {
+        var _this = _super.call(this, "scoreboard", document.getElementById("container"), 0, 5, 150, 50) || this;
+        _this.score = 0;
+        document.getElementById("scoreboard").innerHTML = _this.score.toString();
+        return _this;
     }
-    return PlayerAction;
-}());
+    return ScoreBoard;
+}(GameObject));
 var Util = (function () {
     function Util() {
     }

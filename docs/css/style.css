@@ -23,8 +23,29 @@ container{
     
 }
 
+start{
+    background-image: url("../images/start_button.png");
+    width:128px; height:64px;
+    left: 336px; top: 0px;
+    overflow:hidden;
+}
+
+score{
+    color: white;
+    position: fixed;
+    z-index: 999;
+}
+
+gameOver{
+    z-index: 9;
+    font-size: 30px;
+    margin-left: 25%;
+    color: white;
+    text-shadow: 3px 0 red, 0 1px red, 1px 0 red, 0 3px red;
+}
+
 background {
-    background-image: url(../images/bg1.png);
+    background-image: url("../images/bg1.png");
     width:800px;
     height: 600px;
 }
@@ -40,5 +61,5 @@ enemies{
 bullets{
     width: 5px;
     height: 5px;
-    background-color: white;
+    background-color: white;    
 }

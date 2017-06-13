@@ -1,0 +1,3 @@
+interface PlayerState{
+    action():void;
+}
