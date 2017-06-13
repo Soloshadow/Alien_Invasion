@@ -10,6 +10,7 @@ private gamespeed: number;
 private score: number;
 private mulitplier: number;
 
+
 private gameobject:Array<GameObject> = new Array<GameObject>();
 
     constructor(){
@@ -64,8 +65,18 @@ private gameobject:Array<GameObject> = new Array<GameObject>();
                 }
             }
 
+            //check if alien reaches bottom of screen
+            for(let j = 0; j < this.fleet.aliens.length; j++){
+                if(this.fleet.aliens[j].y + this.fleet.aliens[j].height >= 600){
+                    dead = true;
+                    let endDiv = document.getElementById("gameover");
+                    endDiv.innerHTML = "Game Over<br>Score: "+ Math.round(this.score) + "<br>Refresh page to restart ";
+                    TweenLite.to(endDiv, 3, {x:0,y:100, ease:Bounce.easeOut });
+                }
+            }
+
             //check for bullet and alien collision
-           for(let n = 0; n < this.fleet.aliens.length; n++){
+            for(let n = 0; n < this.fleet.aliens.length; n++){
                 let obj1 = this.player.bullets[i];
                 let obj2 = this.fleet.aliens[n];
 
@@ -84,12 +95,17 @@ private gameobject:Array<GameObject> = new Array<GameObject>();
                             //multiply alien worth each time an alien is shot down
                             this.mulitplier *= 1.1;
 
+                            for(let j = 0; j < this.fleet.aliens.length; j++){
+                                this.fleet.aliens[j].notify(1.1);
+                            }
+
                             //remove the alien out of array when it is shot down
                             this.fleet.aliens[n].div.remove();                            
                             let e : number = this.fleet.aliens.indexOf(this.fleet.aliens[n]);
                             if(i != -1){
                                 this.fleet.aliens.splice(e,1);
                             }
+                        
                         }
 
                         //remove the bullet
@@ -99,6 +115,7 @@ private gameobject:Array<GameObject> = new Array<GameObject>();
                             this.player.bullets.splice(s,1);
                         }
                     }
+
                 }
             }
         }
@@ -109,10 +126,10 @@ private gameobject:Array<GameObject> = new Array<GameObject>();
             let obj2 = this.fleet.aliens[i];
 
             if(Util.checkCollision(obj1,obj2)){
-            dead = true;
-            let endDiv = document.getElementById("gameover");
-            endDiv.innerHTML = "Game Over<br>Score: "+ Math.round(this.score) + "<br>Refresh page to restart ";
-            TweenLite.to(endDiv, 3, {x:0,y:100, ease:Bounce.easeOut });
+                dead = true;
+                let endDiv = document.getElementById("gameover");
+                endDiv.innerHTML = "Game Over<br>Score: "+ Math.round(this.score) + "<br>Refresh page to restart ";
+                TweenLite.to(endDiv, 3, {x:0,y:100, ease:Bounce.easeOut });
             }
         }
 
@@ -126,7 +143,6 @@ private gameobject:Array<GameObject> = new Array<GameObject>();
            requestAnimationFrame(() => this.gameLoop());
        }
     }
-
 
 }
 

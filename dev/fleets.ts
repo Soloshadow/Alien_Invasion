@@ -1,9 +1,9 @@
 
 
-class Fleets{
+class Fleets implements Subject{
 
     public aliens: Array<Enemies> = new Array;
-
+    public observers:Array<Observer> = new Array<Observer>();
     private aliensx: number;
     private aliensy: number;
     
@@ -39,6 +39,12 @@ class Fleets{
         }
     }
 
+    public sendNotifications(s:number): void {
+        for (let o of this.observers) {
+            o.notify(s);
+        }
+    }
+
     update(){
         //boolean value to check whether the fleet is at the edge of the screen or not
         let edge:boolean = false;
@@ -61,5 +67,13 @@ class Fleets{
                  this.aliens[j].shift_down();
                  }     
         }  
+    }
+
+    subscribe(o:Observer){
+        this.observers.push(o);
+    }
+
+    unsubscribe(o:Observer){
+        
     }
 }

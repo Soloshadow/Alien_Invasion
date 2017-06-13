@@ -79,8 +79,6 @@ var Bullets = (function (_super) {
         var _this = _super.call(this, "bullets", document.getElementById("container"), x, y, 5, 10) || this;
         _this.x = x;
         _this.y = y;
-        _this.width = 5;
-        _this.height = 10;
         _this.bulletSpeed = s;
         return _this;
     }
@@ -105,6 +103,10 @@ var Enemies = (function (_super) {
     Enemies.prototype.move = function () {
         this.x += this.speed;
     };
+    Enemies.prototype.notify = function (s) {
+        this.speed *= s;
+        console.log("test");
+    };
     Enemies.prototype.shift_down = function () {
         this.y += 25;
         this.speed *= -1;
@@ -114,6 +116,7 @@ var Enemies = (function (_super) {
 var Fleets = (function () {
     function Fleets(s) {
         this.aliens = new Array;
+        this.observers = new Array();
         this.add_aliens(s);
         console.log(s);
     }
@@ -136,6 +139,12 @@ var Fleets = (function () {
             }
         }
     };
+    Fleets.prototype.sendNotifications = function (s) {
+        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
+            var o = _a[_i];
+            o.notify(s);
+        }
+    };
     Fleets.prototype.update = function () {
         var edge = false;
         for (var i = 0; i < this.aliens.length; i++) {
@@ -153,6 +162,11 @@ var Fleets = (function () {
                 this.aliens[j].shift_down();
             }
         }
+    };
+    Fleets.prototype.subscribe = function (o) {
+        this.observers.push(o);
+    };
+    Fleets.prototype.unsubscribe = function (o) {
     };
     return Fleets;
 }());
@@ -216,6 +230,14 @@ var Game = (function () {
                     this.player.bullets.splice(s, 1);
                 }
             }
+            for (var j = 0; j < this.fleet.aliens.length; j++) {
+                if (this.fleet.aliens[j].y + this.fleet.aliens[j].height >= 600) {
+                    dead = true;
+                    var endDiv = document.getElementById("gameover");
+                    endDiv.innerHTML = "Game Over<br>Score: " + Math.round(this.score) + "<br>Refresh page to restart ";
+                    TweenLite.to(endDiv, 3, { x: 0, y: 100, ease: Bounce.easeOut });
+                }
+            }
             for (var n = 0; n < this.fleet.aliens.length; n++) {
                 var obj1 = this.player.bullets[i];
                 var obj2 = this.fleet.aliens[n];
@@ -227,6 +249,9 @@ var Game = (function () {
                             var scoreDiv = document.getElementById("score");
                             scoreDiv.innerHTML = "Score: " + Math.round(this.score);
                             this.mulitplier *= 1.1;
+                            for (var j = 0; j < this.fleet.aliens.length; j++) {
+                                this.fleet.aliens[j].notify(1.1);
+                            }
                             this.fleet.aliens[n].div.remove();
                             var e = this.fleet.aliens.indexOf(this.fleet.aliens[n]);
                             if (i != -1) {

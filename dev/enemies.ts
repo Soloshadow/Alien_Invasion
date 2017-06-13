@@ -1,6 +1,6 @@
 /// <reference path="gameobject.ts"/>
 
-class Enemies extends GameObject{
+class Enemies extends GameObject implements Observer{
     public width:number;
     public height:number;
     public hp:number;
@@ -9,7 +9,7 @@ class Enemies extends GameObject{
     public points: number;
 
     constructor(x:number, y:number, s:number){
-        super("enemies",document.getElementById("container"), x, y,50,50);
+        super("enemies",document.getElementById("container"), x, y, 50, 50);
 
         this.x = x;
         this.y = y;
@@ -27,6 +27,11 @@ class Enemies extends GameObject{
 
     move(){
         this.x += this.speed;     
+    }
+
+    public notify(s:number){
+        this.speed *= s;
+        console.log("test");
     }
 
    

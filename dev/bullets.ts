@@ -10,8 +10,6 @@ class Bullets extends GameObject{
 
         this.x = x;
         this.y = y;
-        this.width = 5;
-        this.height = 10;
         this.bulletSpeed = s;
            
     }

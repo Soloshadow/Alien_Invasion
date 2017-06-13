@@ -50,16 +50,18 @@ namespace Action {
 
         constructor(c:Player){
             this.player = c;
-           
+
         }
 
-        action(){          
+        action(){       
+           
             //create a bullet
             this.player.bullets.push(
                 new Bullets(this.player.x + this.player.width/2, this.player.y, this.player.bulletSpeed) 
             )   
             
         }
+        
         
     }
 }

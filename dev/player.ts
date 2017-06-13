@@ -34,8 +34,7 @@ class Player extends GameObject{
             this.state = new Action.MoveRight(this);
         }
         if(e.keyCode === Keys.SPACE){
-            this.state = new Action.Attack(this);
-            
+            this.state = new Action.Attack(this);    
         }
     }
 

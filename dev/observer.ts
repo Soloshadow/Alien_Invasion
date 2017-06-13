@@ -1,3 +1,3 @@
 interface Observer{
-    notify():void;
+    notify(s:number):void;
 }
