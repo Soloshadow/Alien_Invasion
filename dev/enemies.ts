@@ -36,7 +36,7 @@ class Enemies extends GameObject implements Observer{
 
    
     //shift the alien down verically and move it to the opposie direction
-    shift_down(){
+    public shift_down(){
         this.y += 25;
         this.speed *= -1;    
     }

@@ -9,8 +9,6 @@ private fleet: Fleets;
 private gamespeed: number;
 private score: number;
 private mulitplier: number;
-
-
 private gameobject:Array<GameObject> = new Array<GameObject>();
 
     constructor(){

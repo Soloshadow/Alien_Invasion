@@ -302,7 +302,6 @@ var Player = (function (_super) {
         _this.bullets = new Array();
         _this.speed = 5;
         _this.bulletSpeed = -5;
-        _this.ammo = 3;
         _this.callback = function (e) { return _this.onKeyDown(e); };
         window.addEventListener("keydown", _this.callback);
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
@@ -327,16 +326,6 @@ var Player = (function (_super) {
         this.state.action();
     };
     return Player;
-}(GameObject));
-var ScoreBoard = (function (_super) {
-    __extends(ScoreBoard, _super);
-    function ScoreBoard() {
-        var _this = _super.call(this, "scoreboard", document.getElementById("container"), 0, 5, 150, 50) || this;
-        _this.score = 0;
-        document.getElementById("scoreboard").innerHTML = _this.score.toString();
-        return _this;
-    }
-    return ScoreBoard;
 }(GameObject));
 var Util = (function () {
     function Util() {

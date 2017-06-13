@@ -21,11 +21,11 @@ class GameObject {
         this.draw();
    }
 
-    draw():void{
+    public draw():void{
         this.div.style.transform ="translate(" + this.x + "px," + this.y + "px)";
     }
 
-    update():void{
+    public update():void{
 
     }
 }
