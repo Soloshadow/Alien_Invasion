@@ -24,7 +24,7 @@ container{
 }
 
 start{
-    background-image: url("../images/start_button.png");
+    background-image: url("../images/orange_start.png");
     width:128px; height:64px;
     left: 336px; top: 0px;
     overflow:hidden;
