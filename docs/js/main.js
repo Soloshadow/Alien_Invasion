@@ -89,8 +89,9 @@ var Bullets = (function (_super) {
 }(GameObject));
 var Enemies = (function (_super) {
     __extends(Enemies, _super);
-    function Enemies(x, y, s) {
+    function Enemies(x, y, s, subscribe) {
         var _this = _super.call(this, "enemies", document.getElementById("container"), x, y, 50, 50) || this;
+        subscribe.subscribe(_this);
         _this.x = x;
         _this.y = y;
         _this.width = 50;
@@ -135,7 +136,7 @@ var Fleets = (function () {
         this.aliensy = this.aliens_row();
         for (var i = 0; i < this.aliensy; i++) {
             for (var n = 0; n < this.aliensx; n++) {
-                this.aliens.push(new Enemies(n * 80, 50 + (i * 60), s));
+                this.aliens.push(new Enemies(n * 80, 50 + (i * 60), s, this));
             }
         }
     };

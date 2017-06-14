@@ -8,9 +8,9 @@ class Enemies extends GameObject implements Observer{
     public y:number;
     public points: number;
 
-    constructor(x:number, y:number, s:number){
+    constructor(x:number, y:number, s:number, subscribe:Subject){
         super("enemies",document.getElementById("container"), x, y, 50, 50);
-
+        subscribe.subscribe(this);
         this.x = x;
         this.y = y;
 

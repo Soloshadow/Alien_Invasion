@@ -34,7 +34,7 @@ class Fleets implements Subject{
 
         for (let i = 0; i < this.aliensy; i++){
             for (let n = 0; n < this.aliensx; n++){               
-                this.aliens.push(new Enemies(n * 80, 50 +(i * 60), s)); 
+                this.aliens.push(new Enemies(n * 80, 50 +(i * 60), s, this)); 
             }
         }
     }
