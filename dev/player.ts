@@ -8,14 +8,15 @@ class Player extends GameObject{
     public bullets: Array<Bullets> = new Array();
     public bulletSpeed: number;
     public callback: EventListener;
+    public ammo: boolean;
    
     constructor(){
         super("player",document.getElementById("container"),400,540,50,50);
 
         this.speed = 5;
         this.bulletSpeed = -5;
-
-
+        this.ammo = true;
+       
          //add event listeners for moving and shooting
         this.callback = (e:KeyboardEvent) => this.onKeyDown(e);
         window.addEventListener("keydown", this.callback);
@@ -32,17 +33,18 @@ class Player extends GameObject{
         if(e.keyCode === Keys.RIGHT){
             this.state = new Action.MoveRight(this);
         }
-        if(e.keyCode === Keys.SPACE){
+        if(e.keyCode === Keys.SPACE){          
             this.state = new Action.Attack(this);    
         }
     }
 
     private onKeyUp(e:KeyboardEvent){
         this.state = new Action.Idle(this);
+        this.ammo = true;
     }
   
     public update(){
-        this.state.action();
+        this.state.action(); 
     }
 
   

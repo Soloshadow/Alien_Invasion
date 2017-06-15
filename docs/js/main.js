@@ -48,7 +48,10 @@ var Action;
             this.player = c;
         }
         Attack.prototype.action = function () {
-            this.player.bullets.push(new Bullets(this.player.x + this.player.width / 2, this.player.y, this.player.bulletSpeed));
+            while (this.player.ammo) {
+                this.player.bullets.push(new Bullets(this.player.x + this.player.width / 2, this.player.y, this.player.bulletSpeed));
+                this.player.ammo = false;
+            }
         };
         return Attack;
     }());
@@ -303,6 +306,7 @@ var Player = (function (_super) {
         _this.bullets = new Array();
         _this.speed = 5;
         _this.bulletSpeed = -5;
+        _this.ammo = true;
         _this.callback = function (e) { return _this.onKeyDown(e); };
         window.addEventListener("keydown", _this.callback);
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
@@ -322,6 +326,7 @@ var Player = (function (_super) {
     };
     Player.prototype.onKeyUp = function (e) {
         this.state = new Action.Idle(this);
+        this.ammo = true;
     };
     Player.prototype.update = function () {
         this.state.action();

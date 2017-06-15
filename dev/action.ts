@@ -54,12 +54,14 @@ namespace Action {
         }
 
         action(){       
-           
-            //create a bullet
-            this.player.bullets.push(
-                new Bullets(this.player.x + this.player.width/2, this.player.y, this.player.bulletSpeed) 
-            )   
-            
+            while(this.player.ammo){
+                //create a bullet
+                this.player.bullets.push(
+                        new Bullets(this.player.x + this.player.width/2, this.player.y, this.player.bulletSpeed) 
+                )
+                this.player.ammo = false;
+            }
+
         }
         
         

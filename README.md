@@ -46,7 +46,7 @@ Whenever an alien is shot down, his friends will move faster so be carefull. Whe
 <p>The action.ts is a namespace class</p>
 <br>
 <h2>Polymorphism</h2>
-</p>Player, bullets and stages are children classes from gameobject.ts</p>
+</p>In main.ts there is a game object which has player and stages in it</p>
 <br>
 <h2>Enumerations</h2>
 <p>The keys.ts is an example of enumeration where I put the keybindings</p>
