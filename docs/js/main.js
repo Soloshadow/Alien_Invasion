@@ -104,9 +104,6 @@ var Enemies = (function (_super) {
         _this.speed = s;
         return _this;
     }
-    Enemies.prototype.move = function () {
-        this.x += this.speed;
-    };
     Enemies.prototype.notify = function (s) {
         this.speed *= s;
         console.log("test");
@@ -124,6 +121,11 @@ var Fleets = (function () {
         this.add_aliens(s);
         console.log(s);
     }
+    Fleets.prototype.move = function () {
+        for (var i = 0; i < this.aliens.length; i++) {
+            this.aliens[i].x += this.aliens[i].speed;
+        }
+    };
     Fleets.prototype.aliens_number = function () {
         var available_space = 800 / 50;
         var alien_numb = available_space / 2;
@@ -151,8 +153,8 @@ var Fleets = (function () {
     };
     Fleets.prototype.update = function () {
         var edge = false;
+        this.move();
         for (var i = 0; i < this.aliens.length; i++) {
-            this.aliens[i].move();
             this.aliens[i].draw();
             if (this.aliens[i].x + 50 >= 800) {
                 edge = true;
@@ -248,14 +250,12 @@ var Game = (function () {
                 if (obj1 != null && obj2 != null) {
                     if (Util.checkCollision(obj1, obj2)) {
                         this.fleet.aliens[n].hp -= 1;
+                        this.fleet.sendNotifications(1.001);
                         if (this.fleet.aliens[n].hp < 1) {
                             this.score += (this.fleet.aliens[n].points * this.mulitplier);
                             var scoreDiv = document.getElementById("score");
                             scoreDiv.innerHTML = "Score: " + Math.round(this.score);
                             this.mulitplier *= 1.1;
-                            for (var j = 0; j < this.fleet.aliens.length; j++) {
-                                this.fleet.aliens[j].notify(1.1);
-                            }
                             this.fleet.aliens[n].div.remove();
                             var e = this.fleet.aliens.indexOf(this.fleet.aliens[n]);
                             if (i != -1) {

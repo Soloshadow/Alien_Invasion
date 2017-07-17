@@ -25,9 +25,9 @@ class Enemies extends GameObject implements Observer{
         this.speed = s;
     }
 
-    move(){
-        this.x += this.speed;     
-    }
+    // move(){
+    //     this.x += this.speed;     
+    // }
 
     public notify(s:number){
         this.speed *= s;

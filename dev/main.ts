@@ -83,6 +83,9 @@ private gameobject:Array<GameObject> = new Array<GameObject>();
                     if (Util.checkCollision(obj1,obj2)){
                         this.fleet.aliens[n].hp -= 1;
 
+                        //fleet send notification to aliens to move faster
+                        this.fleet.sendNotifications(1.001);
+
                         //remove the alien
                         if(this.fleet.aliens[n].hp < 1){
                             //update score each time an alien is shot down
@@ -93,9 +96,9 @@ private gameobject:Array<GameObject> = new Array<GameObject>();
                             //multiply alien worth each time an alien is shot down
                             this.mulitplier *= 1.1;
 
-                            for(let j = 0; j < this.fleet.aliens.length; j++){
-                                this.fleet.aliens[j].notify(1.1);
-                            }
+                            // for(let j = 0; j < this.fleet.aliens.length; j++){
+                            //     this.fleet.aliens[j].notify(1.1);
+                            // }
 
                             //remove the alien out of array when it is shot down
                             this.fleet.aliens[n].div.remove();                            
