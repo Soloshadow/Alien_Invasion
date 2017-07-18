@@ -13,11 +13,11 @@ class Fleets implements Subject{
         console.log(s);
     }
 
-    move(){
-        for(let i = 0; i < this.aliens.length; i++){
-            this.aliens[i].x += this.aliens[i].speed;
-        }
-    }
+    // move(){
+    //     for(let i = 0; i < this.aliens.length; i++){
+    //         this.aliens[i].x += this.aliens[i].speed;
+    //     }
+    // }
 
     // check how many number of aliens can fit in a row
     public aliens_number(){
@@ -54,11 +54,11 @@ class Fleets implements Subject{
     update(){
         //boolean value to check whether the fleet is at the edge of the screen or not
         let edge:boolean = false;
-        this.move();
+        //this.move();
 
         //draw each alien and make it move. Also check if each alien is touching the left side of the screen or right side of the screen edge
         for(let i = 0; i < this.aliens.length; i++){
-             //this.aliens[i].move();
+             this.aliens[i].move();
              this.aliens[i].draw();
 
              if(this.aliens[i].x + 50 >= 800){
